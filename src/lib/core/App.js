@@ -9,30 +9,34 @@ import Dados from '../components/Dados';
 import LotacaoPrincipal from '../components/LotacaoPrincipal';
 
 const StyledLoader = () => (
-  <div style={{ display: 'flex', justifyContent: 'center', padding: 15}}>
-    <Loader
-      size="large"
-      color="blue"
-      label="Loading..."
-    />
+  <div style={{ display: 'flex', justifyContent: 'center', padding: 15 }}>
+    <Loader size="large" color="blue" label="Loading..." />
   </div>
 );
 
 const App = () => {
   return (
     <>
-     <Query query={GET_DADOS_LOTACAO_PRINCIPAL}>
+      <Query query={GET_DADOS_LOTACAO_PRINCIPAL}>
         {({ loading, data, error }) => {
-          if (loading) return (<StyledLoader />);
+          if (loading) {
+            return <StyledLoader />;
+          }
 
           if (error) {
             const [, , message] = error.message.split(':');
 
-            return (<EmptyState title="Não exitem registros" icon="Fail" subtitle={message}/>)
-          };
+            return (
+              <EmptyState
+                title="Não exitem registros"
+                icon="Fail"
+                subtitle={message}
+              />
+            );
+          }
           if (data) {
-            const {usuario = {}} = data || {};
-            const { lotacao_principal : { foro } = {} } = usuario;
+            const { usuario = {} } = data || {};
+            const { lotacao_principal: { foro } = {} } = usuario;
 
             return (
               <>
@@ -43,8 +47,8 @@ const App = () => {
           }
         }}
       </Query>
-    </>    
+    </>
   );
-}
+};
 
 export default App;

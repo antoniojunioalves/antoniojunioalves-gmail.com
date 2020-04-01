@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import { Grid, Input, Typography, Button, useToast } from '@bayon/commons';
 import { UPDATE_USUARIO } from '../../services/graphql/mutations';
+
+// Components
 import SelectGenero from './SelectGenero';
 import SelectCargo from './SelectCargo';
 
 const Dados = ({ usuario }) => {
   const { enqueueToast } = useToast();
   const [usuarioForm, setUsuarioForm] = useState(usuario);
-  const handleInputOnChange = novoCampoUsuario => setUsuarioForm({ ...usuarioForm, ...novoCampoUsuario });
+  const handleInputOnChange = novoCampoUsuario =>
+    setUsuarioForm({ ...usuarioForm, ...novoCampoUsuario });
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Typography>
-          Dados do usuario 
-        </Typography>
+        <Typography>Dados do usuario</Typography>
       </Grid>
       <Mutation
         mutation={UPDATE_USUARIO}
@@ -25,7 +26,9 @@ const Dados = ({ usuario }) => {
         }}
         onError={() => {
           setUsuarioForm(usuario);
-          enqueueToast('Não foi possível atualizar o usuário!', { type: 'error' });
+          enqueueToast('Não foi possível atualizar o usuário!', {
+            type: 'error'
+          });
         }}
       >
         {(updateUsuario, { loading }) => (
@@ -35,107 +38,111 @@ const Dados = ({ usuario }) => {
               updateUsuario({ variables: usuarioForm });
             }}
           >
-            <Grid container >
+            <Grid container>
               <Grid item xs={1}>
-                <Input 
-                  fullWidth 
-                  disabled 
+                <Input
+                  fullWidth
+                  disabled
                   required
-                  name="id" 
-                  label="ID" 
-                  size="small" 
+                  name="id"
+                  label="ID"
+                  size="small"
                   value={usuarioForm?.id || ''}
                 />
               </Grid>
               <Grid item xs={3}>
-                <Input 
+                <Input
                   fullWidth
                   required
                   disabled={loading}
-                  name="nome" 
-                  label="NOME" 
-                  size="small" 
+                  name="nome"
+                  label="NOME"
+                  size="small"
                   value={usuarioForm?.nome || ''}
-                  onChange={(e) => {
+                  onChange={e => {
                     e.persist();
-                    handleInputOnChange({nome: e.target.value})
+                    handleInputOnChange({ nome: e.target.value });
                   }}
                 />
               </Grid>
               <Grid item xs={4}>
-                <SelectGenero loading={loading} value={usuarioForm?.genero || ''} onChange={genero => handleInputOnChange(genero)} />
+                <SelectGenero
+                  loading={loading}
+                  valueSelect={usuarioForm?.genero || ''}
+                  onChange={genero => handleInputOnChange(genero)}
+                />
               </Grid>
               <Grid item xs={4}>
-                <Input 
-                  fullWidth 
+                <Input
+                  fullWidth
                   required
                   disabled={loading}
-                  name="documento" 
-                  label="DOCUMENTO" 
-                  size="small" 
+                  name="documento"
+                  label="DOCUMENTO"
+                  size="small"
                   value={usuarioForm?.documento || ''}
-                  onChange={(e) => {
+                  onChange={e => {
                     e.persist();
-                    handleInputOnChange({documento: e.target.value})
+                    handleInputOnChange({ documento: e.target.value });
                   }}
                 />
               </Grid>
               <Grid item xs={4}>
-                <Input 
-                  fullWidth 
+                <Input
+                  fullWidth
                   disabled={loading}
-                  name="telefone" 
-                  label="TELEFONE" 
-                  size="small" 
+                  name="telefone"
+                  label="TELEFONE"
+                  size="small"
                   value={usuarioForm?.contato?.telefone || ''}
-                  onChange={(e) =>{
+                  onChange={e => {
                     e.persist();
-                    setUsuarioForm((currentUsuario) => ({
+                    setUsuarioForm(currentUsuario => ({
                       ...currentUsuario,
                       contato: {
                         ...currentUsuario.contato,
                         telefone: e.target.value
                       }
-                    }))
+                    }));
                   }}
                 />
               </Grid>
               <Grid item xs={4}>
-                <Input 
+                <Input
                   fullWidth
-                  disabled={loading} 
-                  name="email" 
-                  label="EMAIL" 
-                  size="small" 
+                  disabled={loading}
+                  name="email"
+                  label="EMAIL"
+                  size="small"
                   value={usuarioForm?.contato.email || ''}
-                  onChange={(e) =>{
+                  onChange={e => {
                     e.persist();
-                    setUsuarioForm((currentUsuario) => ({
+                    setUsuarioForm(currentUsuario => ({
                       ...currentUsuario,
                       contato: {
                         ...currentUsuario.contato,
                         email: e.target.value
                       }
-                    }))
+                    }));
                   }}
                 />
               </Grid>
               <Grid item xs={4}>
-                <SelectCargo onChange={cargo => handleInputOnChange(cargo)}  value={usuarioForm?.cargo} comPaiIsLoading={loading}/>
+                <SelectCargo
+                  onChange={cargo => handleInputOnChange(cargo)}
+                  value={usuarioForm?.cargo ?? null}
+                  disabled={loading}
+                />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              loading={loading}
-              disabled={loading}
-            >
+            <Button type="submit" loading={loading} disabled={loading}>
               Atualizar dados do usuário
             </Button>
           </form>
-        )}  
+        )}
       </Mutation>
     </Grid>
-  ); 
-}
+  );
+};
 
 export default Dados;

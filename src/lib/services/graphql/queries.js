@@ -29,13 +29,13 @@ const GET_DADOS_LOTACAO_PRINCIPAL = gql`
 `;
 
 const GET_ALL_CARGOS = gql`
-  {
-    cargos {
+  query($nome: String) {
+    cargos(filter: { nome: $nome, page_size: 20 }) {
       items {
         id
         descricao
       }
     }
   }
-`
+`;
 export { GET_DADOS_LOTACAO_PRINCIPAL, GET_ALL_CARGOS };
