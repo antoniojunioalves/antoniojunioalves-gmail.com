@@ -1,8 +1,24 @@
 import React from 'react';
+import { Grid, Typography, Input } from '@bayon/commons';
 
-const LotacaoPrincipal = ({ idForo, descricaoForo, nomeMunicipio }) => {
+const LotacaoPrincipal = ({ foro }) => {
   return (
-    <div>LotacaoPrincipal</div>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography>
+          Lotação Principal
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Input fullWidth disabled name="idForo" label="ID foro" size="small" value={foro?.idForo ?? ''} />
+      </Grid>
+      <Grid item xs={3}>
+        <Input fullWidth disabled name="descricaoForo" label="Descrição" size="small" value={foro?.descricao ?? ''} />
+      </Grid>
+      <Grid item xs={4}>
+        <Input fullWidth disabled name="nomeMunicipio" label="Nome do município" size="small" value={foro?.municipio?.nome ?? ''} />
+      </Grid>
+    </Grid>
   );
 }
 
